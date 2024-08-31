@@ -1,0 +1,8 @@
+
+
+export DOT=$(shell pwd)
+export DOTDOT=$(shell cat .dotdot)
+export GATE=0
+.SILENT:
+MAKEFLAGS += --no-print-directory
+

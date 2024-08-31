@@ -50,7 +50,31 @@ def rrefsolve(A,b):
 			for j in range(0,N+1):
 				A[i][j] = A[n][j]*num/den - A[i][j];
 		n+=1
-	S = np.zeros(N,dtype=np.double)
+	S = np.zeros(N,dtype=np.double);
 	for n in range (0,N):
 		S[n] = A[n][N]/A[n][n];
 	return S;
+
+def DCT(A,b,t):
+
+	N = A.shape[0];
+	M = A.shape[1];
+
+	S = np.zeros(M,dtype=np.double);
+
+	for k in range(0,N):
+		S[0] = S[0] + b[k];
+	for m in range(1,M):
+		for k in range(0,N):
+			S[m] = S[m] + b[k]*np.cos(2*np.pi*k*m/N);
+	return S/M;
+
+def plot_png(x,y,name):
+	from PIL import Image, ImageDraw
+	from matplotlib.figure import Figure
+	fig = Figure();
+	ax = fig.add_subplot();
+	ax.set_axis_off();
+	ax.set_aspect('equal');
+	ax.plot(x,y);
+	fig.savefig(name);

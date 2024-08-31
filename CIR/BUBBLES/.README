@@ -1,0 +1,8 @@
+There are two ways to construct a bubbl object.
+
+
+1: (probably the most common way): define the macro VID within make call: Ex: user@address/path/to/bubble$ make bubbl VID="FULL/PATH/TO/SOME/VIDEO.ext"
+
+2: (useful for making multiple bubbl objects at once): write the full path to each video in a file whose name is exactly: imgs   
+   ensure that each full path is written on a seperate line of [imgs].  additionally, note that the file [imgs] will be removed after a succesful call
+   finally, simply type the comand: make; Ex: user@address/path/to/bubble$ make

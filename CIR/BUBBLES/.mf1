@@ -1,0 +1,21 @@
+
+
+export DOT=$(shell pwd)
+export DOTDOT=$(shell cat .dotdot)
+export GATE=0
+.SILENT:
+MAKEFLAGS += --no-print-directory
+
+
+cont.png: ../.cont.pngctrl img.png
+	echo "$(DOT)/img.png\n$(DOT)/cont.png" > ../.cont.pngi
+	if [ $${GATE} -eq 1 ]; then \
+		echo term > ../.cont.pngi; \
+		rm ../.cont.pngctrl ../.cont.pngi; \
+	fi
+
+../.cont.pngctrl: .lib/plib/cont_pngbd.py
+	DOT=$${DOTDOT}; \
+	./.lib/cont.pngfire.sh
+
+	$(eval GATE=1)
