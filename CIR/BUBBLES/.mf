@@ -1,8 +1,8 @@
 ###
 																###
-###		A COPY OF THIS FILE EXISTS AS .Makefile SHOULD ANYTHING HAPPEN TO THIS (ACCIDENTAL FILE DESTRUCTION)
+###		A COPY OF THIS FILE EXISTS AS .mfb SHOULD ANYTHING HAPPEN TO THIS (ACCIDENTAL FILE DESTRUCTION)
 																###
-### 		PLEASE NOTE THAT A CALL TO MAKE WILL NOT FUNCTION UNLESS $(VID) IS DEFINED.
+###
 																###
 
 
@@ -11,6 +11,8 @@
 
 
 export DOT=$(shell pwd)
+
+export DOTDOT=$(shell cat .dotdot)
 
 MAKEFLAGS += --no-print-directory
 
@@ -21,6 +23,7 @@ MAKEFLAGS += --no-print-directory
 
 # BUILDER
 
+all: $(DOT)/.timestamp
 
 $(DOT)/.timestamp: bld_specs
 	./.lib/bld.sh
@@ -35,6 +38,7 @@ obj: oup
 	echo "building $${DIR} ..." ;\
 	mkdir "$(DOT)/$${DIR}"
 	./.lib/obj.sh
+
 
 
 
@@ -56,7 +60,8 @@ update-mfs:
 update-all:
 	./.lib/upd.sh
 
-
+bld_specs:
+	./.lib/bds.sh
 
 
 # METADATA

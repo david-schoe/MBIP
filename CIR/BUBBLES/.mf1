@@ -1,21 +1,41 @@
+###
+                                                                                                                                ###
+###             A COPY OF THIS FILE EXISTS AS .mfb1 SHOULD ANYTHING HAPPEN TO THIS (ACCIDENTAL FILE DESTRUCTION)
+                                                                                                                                ###
+###
+                                                                                                                                ###
+
+
+
+# ENV VARIABLES
 
 
 export DOT=$(shell pwd)
+
 export DOTDOT=$(shell cat .dotdot)
-export GATE=0
-.SILENT:
+
 MAKEFLAGS += --no-print-directory
 
+.SILENT:
 
-cont.png: ../.cont.pngctrl img.png
-	echo "$(DOT)/img.png\n$(DOT)/cont.png" > ../.cont.pngi
+
+
+
+# BUILDER
+
+all: CONT.png
+
+export GATE=0
+
+CONT.png: ../.CONT.pngctrl IMG.png
+	echo "$(DOT)/IMG.png\n$(DOT)/CONT.png" > ../.CONT.pngi
 	if [ $${GATE} -eq 1 ]; then \
-		echo term > ../.cont.pngi; \
-		rm ../.cont.pngctrl ../.cont.pngi; \
+		echo term > ../.CONT.pngi; \
+		rm ../.CONT.pngctrl ../.CONT.pngi; \
 	fi
 
-../.cont.pngctrl: .lib/plib/cont_pngbd.py
+../.CONT.pngctrl: .lib/plib/CONT_pngbd.py
 	DOT=$${DOTDOT}; \
-	./.lib/cont.pngfire.sh
+	./.lib/CONT.pngfire.sh
 
 	$(eval GATE=1)

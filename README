@@ -1,0 +1,14 @@
+INITIAL SETUP:
+
+1. After cloning the repository in the ideal location, type the command: make
+2. If dependencies are missing, the build will "fail" due to lack of permission; in this case, type the command: sudo make
+3. Enter the directory, "BUBBLES", by typing the command: cd CIR/BUBBLES
+4. Once inside the directory, "BUBBLES", type the command: make (NOTE two bubbles will be constructed; during bubble construction DO NOT press any keys!! See section,
+	"BUILD FAILURE", for details of how to handle this.)
+
+
+BUILD FAILURE:
+
+In the event of a build failure, it is important to kill any background processes involved in the build that were unable to close correctly. To do this, simply
+type the command: kill -9 -1
+	

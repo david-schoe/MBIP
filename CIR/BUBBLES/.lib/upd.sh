@@ -10,12 +10,12 @@ n=0;
 while [ $n -lt $N ]; do
 	p=($(head -n 1 l0))
 	./.lib/${p}fire.sh
-	sed 1d l0
+	sed -i 1d l0
 	n=$((n+1))
 done
 
 for obj in $(cat .objd); do
-	echo "updating $obj"
+	echo "updating $obj ..."
 	make -C $obj
 done;
 
@@ -23,7 +23,7 @@ n=0;
 while [ $n -lt $N ]; do
 	p=($(head -n 1 l1))
 	./.lib/${p}kill.sh
-	sed 1d l1
+	sed -i 1d l1
 	n=$((n+1))
 done
 rm l0 l1

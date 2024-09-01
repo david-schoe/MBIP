@@ -1,16 +1,12 @@
 #!/bin/bash
 
-SPEC="$(cat .sn0)"
-mkdir "${SPEC}s"
+export SPEC="$(cat .sn0)"
 
-FI="${DOT}/$(cat .sn).$(cat ext)"
-FO="${SPEC}%d.png"
+./.lib/${SPEC}.sh
 
-cd "${SPEC}s" && ffmpeg -i $FI $FO && cd ..
-
-for spec in $(ls "${SPEC}s"); do
-	echo "${DOT}/${SPEC}s/${spec}" >> unsorted
+for spec in $(ls "${SPEC}S"); do
+	echo "${DOT}/${SPEC}S/${spec}" >> unsorted
 done
 
 sort -V unsorted > bld_specs
-
+rm unsorted
