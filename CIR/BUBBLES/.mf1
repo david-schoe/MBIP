@@ -23,7 +23,7 @@ MAKEFLAGS += --no-print-directory
 
 # BUILDER
 
-all: CONT.png
+all: CONT.png EDGE.png M
 
 export GATE=0
 
@@ -31,11 +31,31 @@ CONT.png: ../.CONT.pngctrl IMG.png
 	echo "$(DOT)/IMG.png\n$(DOT)/CONT.png" > ../.CONT.pngi
 	if [ $${GATE} -eq 1 ]; then \
 		echo term > ../.CONT.pngi; \
-		rm ../.CONT.pngctrl ../.CONT.pngi; \
 	fi
 
 ../.CONT.pngctrl: .lib/plib/CONT_pngbd.py
 	DOT=$${DOTDOT}; \
-	./.lib/CONT.pngfire.sh
+	./.lib/CONT.pngfire.sh &
+	$(eval GATE=1)
 
+EDGE.png: ../.EDGE.pngctrl IMG.png
+	echo "$(DOT)/IMG.png\n$(DOT)/EDGE.png" > ../.EDGE.pngi
+	if [ $${GATE} -eq 1 ]; then \
+		echo term > ../.EDGE.pngi; \
+	fi
+
+../.EDGE.pngctrl: .lib/plib/EDGE_pngbd.py
+	DOT=$${DOTDOT}; \
+	./.lib/EDGE.pngfire.sh &
+	$(eval GATE=1)
+
+M: ../.Mctrl IMG.png
+	echo "$(DOT)/IMG.png\n$(DOT)/M" > ../.Mi
+	if [ $${GATE} -eq 1 ]; then \
+		echo term > ../.Mi; \
+	fi
+
+../.Mctrl: .lib/plib/M_bd.py
+	DOT=$${DOTDOT}; \
+	./.lib/Mfire.sh &
 	$(eval GATE=1)

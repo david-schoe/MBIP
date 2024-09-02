@@ -22,7 +22,7 @@ done;
 n=0;
 while [ $n -lt $N ]; do
 	p=($(head -n 1 l1))
-	./.lib/${p}kill.sh
+	echo term > .${p}i
 	sed -i 1d l1
 	n=$((n+1))
 done
