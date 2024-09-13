@@ -10,13 +10,27 @@
 # ENV VARIABLES
 
 
-export DOT=$(shell pwd)
-
-export DOTDOT=$(shell cat .dotdot)
-
 .SILENT:
 
 MAKEFLAGS += --no-print-directory
+
+SHELL=/bin/bash
+
+DOT1 = $(shell pwd)
+
+OBJ0 = bub
+OBJ1 = frm
+OBJS0 = bubs
+OBJS1 = frms
+
+
+SPEC0 = vid
+SPEC1 = img
+SPECS0 = vids
+SPECS1 = imgs
+
+DPROPS = .canny.png
+PROPS = canny.png
 
 
 
@@ -26,57 +40,64 @@ MAKEFLAGS += --no-print-directory
 
 all: $(DOT)/.timestamp
 
-$(DOT)/.timestamp: bld_specs
-	./.lib/bld.sh
-
+$(DOT)/.timestamp: $(OBJS1) kicklist
+	I=0; \
+	for obj in $$(ls $(OBJS1)); do \
+		echo "building $${obj} ..."; \
+		echo $(DOT1)/$(OBJS1)/$${obj} > i0; \
+		cat $(shell tail -n 1 iL) > /dev/null; \
+	done;
+	kill $(shell cat pL); \
+	rm $(shell cat iL) iL pL kicklist
 
 
 
 # OBJECT
 
 
-obj: oup
-	DIR=$$(tail -n 1 .objd) ;\
-	echo "building $${DIR} ..." ;\
-	mkdir "$(DOT)/$${DIR}"
-	./.lib/obj.sh
+kicklist: $(DPROPS)
+	mkfifo i0; \
+	echo i0 > iL; \
+	n=0; \
+	for k in $(shell cat kicklist); do \
+		mkfifo i$$((n+1)); \
+		echo i$$((n+1)) >> iL; \
+		PYTHONPATH=$(shell pwd)/.lib/plib py -m $${k} "i$${n}" "i$$((n+1))" & \
+		echo $$! >> pL; \
+		n=$$((n+1)); \
+	done; \
 
 
 
+$(OBJS1): $(SPECS1)
+	mkdir $(OBJS1); \
+	I=0; \
+	for spec in $(shell ls $(SPECS1)); do \
+		obj=$$(printf "$(OBJ1)_%04d" $$I); \
+		mkdir $(OBJS1)/$$obj 2>/dev/null; \
+		cp $(SPECS1)/$$spec $(OBJS1)/$$obj/$(SPEC1).png; \
+		I=$$((I+1)); \
+	done
 
-# METHODs
-
-
-order:
-	./.lib/ord.sh
-
-remove: /tmp/BU
-	./.lib/rmv.sh $(RM)
-
-clean: /tmp/BU
-	./.lib/cln.sh
-
-bld_specs:
-	./.lib/bds.sh
-
-update-all:
-	./.lib/upd.sh
+.canny.png: .lib/plib/canny_pngbd.py
+	echo canny_pngbd >> kicklist
+	touch .canny.png
 
 
+$(SPECS1):
+	mkdir $(SPECS1); \
+	FI="$(DOT1)/$(SPEC0).$$(cat $(SPEC0)ext)"; \
+	FO="$(DOT1)/$(SPECS1)/${SPEC1}_%04d.png"; \
+	ffmpeg -v 0 -i $${FI} -start_number 0 $${FO}; \
+	ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=r_frame_rate $(SPEC0).avi > $(SPEC0)fps
+	ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=pix_fmt $(SPEC0).avi > $(SPEC0)pix_fmt
+
+$(SPECS0):
+	mkdir $(SPECS0);
 
 
-# METADATA
+# VIDEO
 
-
-oup: .nobjn
-	./.lib/oup.sh
-
-.nobjn:
-	echo 0 > .nobjn
-
-/tmp/BU:
-	mkdir /tmp/BU
-
-
-
-
+vid: $(SPECS0)
+	echo $$(cat $(SPEC0)ext);
+	ffmpeg -start_number 0 -i $(OBJS1)/$(OBJ1)_%04d/$(IMG).png -framerate $$(cat $(SPEC0)fps) -c:v libx264 -pix_fmt $$(cat $(SPEC0)pix_fmt) $(SPECS0)/$(IMG).$$(cat $(SPEC0)ext)

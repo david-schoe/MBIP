@@ -10,7 +10,7 @@
 
 export DOT=$(shell pwd)
 
-all: /bin/py /bin/ffmpeg ./CIR/BUBBLES/VIDS ./CIR/BUBBLES/Makefile
+all: /bin/py /bin/ffmpeg ./CIR/BUBBLES/vids ./CIR/BUBBLES/Makefile
 
 /bin/py: /bin/python3
 	ln -s /bin/python3 py
@@ -21,8 +21,8 @@ all: /bin/py /bin/ffmpeg ./CIR/BUBBLES/VIDS ./CIR/BUBBLES/Makefile
 /bin/ffmpeg:
 	apt-get install ffmpeg
 
-./CIR/BUBBLES/VIDS:
-	cp -r ./CIR/BUBBLES/.VIDS  ./CIR/BUBBLES/VIDS
+./CIR/BUBBLES/vids:
+	cp -r ./CIR/BUBBLES/.vids  ./CIR/BUBBLES/vids
 
 ./CIR/BUBBLES/Makefile:
 	cp  ./CIR/BUBBLES/.mf  ./CIR/BUBBLES/Makefile
