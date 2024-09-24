@@ -28,29 +28,29 @@ while (1):
 	# Open the image in the frame, invert the image (make black pixels white and vice-versa) using a thresholding value.
 
 	img = cv.imread(f"{strl[0]}/img.png",cv.IMREAD_GRAYSCALE);
-	_,imgt = cv.threshold(img,80,255,cv.THRESH_BINARY_INV);
+	_,thr = cv.threshold(img,80,255,cv.THRESH_BINARY_INV);
 
 
 	# Find each individual contour in the image, ensure its area is greater than min_area, then place the contour inside of fill
 
-	fill = np.zeros((img.shape),np.uint8);
-	contours,_ = cv.findContours(imgt,cv.RETR_LIST,cv.CHAIN_APPROX_NONE);
+	fil = np.zeros((img.shape),np.uint8);
+	contours,_ = cv.findContours(thr,cv.RETR_LIST,cv.CHAIN_APPROX_NONE);
 
 	for cont in contours:
 		if cv.contourArea(cont) > min_area:
-			cv.drawContours(fill,[cont],0,255,-1);
+			cv.drawContours(fil,[cont],0,255,-1);
 
 
 	# Perform Canny edge detection on fill
 
-	imgn0 = cv.Canny(fill,0,1);
+	can = cv.Canny(fil,0,1);
 
 
 	# Store the images that were created
 
-	cv.imwrite(f"{strl[0]}/thresh.png",imgt);
-	cv.imwrite(f"{strl[0]}/fill.png",fill);
-	cv.imwrite(f"{strl[0]}/canny.png",imgn0);
+	cv.imwrite(f"{strl[0]}/thr.png",thr);
+	cv.imwrite(f"{strl[0]}/fil.png",fil);
+	cv.imwrite(f"{strl[0]}/can.png",can);
 
 
 	# Close the fifo. This is done to ensure that a call to "os.read" in the next iteration will cause this process to enter an idle state of waiting for the calling

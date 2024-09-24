@@ -10,7 +10,7 @@
 # ENV VARIABLES
 
 
-.SILENT:
+#.SILENT:
 
 MAKEFLAGS += --no-print-directory
 
@@ -29,8 +29,8 @@ SPEC1 = img
 SPECS0 = vids
 SPECS1 = imgs
 
-DPROPS = .canny.png
-PROPS = canny.png
+DPROPS = $(DOT1)/.can.png $(DOT1)/.rad
+PROPS = can.png rad
 
 
 
@@ -56,6 +56,7 @@ $(DOT)/.timestamp: $(OBJS1) kicklist
 
 
 kicklist: $(DPROPS)
+	echo $(DPROPS)
 	mkfifo i0; \
 	echo i0 > iL; \
 	n=0; \
@@ -65,23 +66,36 @@ kicklist: $(DPROPS)
 		PYTHONPATH=$(shell pwd)/.lib/plib py -m $${k} "i$${n}" "i$$((n+1))" & \
 		echo $$! >> pL; \
 		n=$$((n+1)); \
-	done; \
+	done
 
 
 
 $(OBJS1): $(SPECS1)
 	mkdir $(OBJS1); \
 	I=0; \
+	FPS=$$(cat $(SPEC0)fps); \
 	for spec in $(shell ls $(SPECS1)); do \
 		obj=$$(printf "$(OBJ1)_%04d" $$I); \
-		mkdir $(OBJS1)/$$obj 2>/dev/null; \
+		dir=$(DOT1)/$(OBJS1)/$$obj; \
+		mkdir $$dir 2>/dev/null; \
 		cp $(SPECS1)/$$spec $(OBJS1)/$$obj/$(SPEC1).png; \
+		echo $${I} > $(OBJS1)/$$obj/t; \
 		I=$$((I+1)); \
+		echo $$dir >> .ffp; \
 	done
 
-.canny.png: .lib/plib/canny_pngbd.py
-	echo canny_pngbd >> kicklist
-	touch .canny.png
+
+
+$(DOT1)/.can.png: .lib/plib/can_pngbd.py
+	echo can_pngbd >> kicklist; \
+	touch .can.png
+
+
+
+$(DOT1)/.rad: .lib/plib/radbd.py
+	echo radbd >> kicklist; \
+	touch .rad
+
 
 
 $(SPECS1):
@@ -90,7 +104,8 @@ $(SPECS1):
 	FO="$(DOT1)/$(SPECS1)/${SPEC1}_%04d.png"; \
 	ffmpeg -v 0 -i $${FI} -start_number 0 $${FO}; \
 	ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=r_frame_rate $(SPEC0).avi > $(SPEC0)fps
-	ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=pix_fmt $(SPEC0).avi > $(SPEC0)pix_fmt
+	ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=pix_fmt $(SPEC0).avi > $(SPEC0)pix_fmt; \
+
 
 $(SPECS0):
 	mkdir $(SPECS0);

@@ -1,0 +1,5 @@
+from study import study
+
+s = study((0,),(-1,),[("fft",4,),("t",0,)]);
+
+s.plot(0,1,0);
