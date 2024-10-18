@@ -1,3 +1,62 @@
+
+this is still being developed, although it is operational!
+
+
+
+GENERAL DESCRIPTION:
+
+This software was developed to aid in processing many images (frames) that are extracted from video(s) of a bubble's oscillations. With this in mind, two general
+concepts are used: An "object" serves to hold information about a "specifier"; the "specifier" is the actual data, either a video or an image, and the "object" is
+a directory which holds information pertaining to that "specifier". With this in mind, a "bub" (bubble) "object" holds information about it's "vid" (video) "specifier". The
+"bub" also contains many "frm" (frame) "objects". The "frm" "objects" hold information about their "img" (image) "specifier".
+
+
+
+THEORY OF OPERATION:
+
+This system was designed to work on many videos to categorize and store data about driven microbubble oscillations. It was built to allow for quick and easy updates
+or modifications to all off the "bub" objects. For example, if a researcher has processed 100 videos each containing 500 frames with each frame being 200x200 pixels, but
+has decided it would be useful to include an additional data point for each "frm", rather than reprocessing each video from the ground up, this software allows the researcher
+to pick a starting point from data that has already been calculated, and run on top of that. To accomplish this, general analysis has been chunked and delegated to
+several python daemons, which are capable of operating on individual "frm"s in rapid succession.
+
+Each "frm" uses these daemons to process the "img" associated. At it's current state, there are two daemons, can_png.py and rad.py.  rad.py depends on information that
+is produced by can_png, and can_png relies on only the "img" which has been extracted from the "vid".
+
+After each "frm" has been processed, the data point(s) of interest are stored within the "frm_xxxx" directory. This is great because it uses disk space to preserve the
+bubble properties, and reduces the amount of re-processing required when studying a bubble. The only catch, is the data is stored on the disk, and a researcher
+may want to perform simple operations on this processed data; that is, they need the data available in memory!
+
+
+
+STUDY ENVIRONMENT:
+
+To abstract away the simple (yet cumbersome) process of loading the data points of interest from disk onto memory, a simple python class object builder was designed.
+The "study environment" is built to operate in python (obviously). Simply enter the ~/CIR/BUBBLES directory and type the command, <make new_study>, to be automatically
+brought into a "study environment".
+
+When using the study environment, it is important to be aware of the 3 python class objects and 1 dict involved: Study (S) object; bub (b) object; the frm (f) object;
+and finally the prop (p) dict.
+
+An S object hold an array of b objects, and defines simple plotting tools to help simplify routine plotting operations.
+A b object holds an array of f objects.
+An f object holds one p dict.
+
+To use the study environment:
+1. Ensure there is at least 1 "bub" in the "bubs" directory
+2. run <make new_study> to edit, save and exit
+3. run <make run_study S=X> where X is the number of the study to be run; eg. S=4 will run study_04.py
+4. To easily edit, run <make edit_study S=X> where X is the number of the study to be edited.
+
+
+
+PREREQUISITES:
+
+1. Must be running on some form of linux (Debian recommended)
+2. Must have downloaded python libraries: Numpy; opencv;
+
+
+
 INITIAL BUILD:
 
 1. After cloning the repository in the ideal location, type the command: make
@@ -5,9 +64,3 @@ INITIAL BUILD:
 3. Enter the directory, "BUBBLES", by typing the command: cd CIR/BUBBLES
 4. Once inside the directory, "BUBBLES", type the command: make (NOTE two bubbles will be constructed inside of a directory called "bubs"
 
-
-INITAL BUILD FAILURE:
-
-1. In the event of a build failure, it is important to kill any background processes involved in the build that were unable to close correctly. To do this, simply
-	type the command: kill -9 -1
-2. in the directory CIR/BUBBLES, type the command: make

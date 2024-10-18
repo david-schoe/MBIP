@@ -1,6 +1,6 @@
 ###
 																###
-###			A CHEAP WAY TO CONFIGURE THE BUILD ... ... ... USER MUST HAVE NUMPY AND PILLOW
+###			A CHEAP WAY TO CONFIGURE THE BUILD ... ... ... USER MUST HAVE NUMPY AND CV2
 																###
 ###
 																###

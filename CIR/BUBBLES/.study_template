@@ -1,5 +1,23 @@
 from study import study
 
-s = study((0,),(-1,),[("fft",4,),("t",0,)]);
+# recommended use:  S = study(bt,ft,pl);
 
-s.plot(0,1,0);
+# takes arguments of bubble tupple (bt), frame tupple (ft), and property list (pl)
+# property list (pl) is a list of tupples.
+
+# eg.	bt = (-1,)			-->	all bubbles available
+# eg.	bt = (0,)			-->	just bub_0000
+# eg.	bt = (4,6,9,3)			-->	bub_0004, bub_0006, bub_0009, and bub_0003
+# eg.	ft = (-1,)			-->	all frames available
+# eg.	ft = (0,)			-->	just frm_0000
+# eg.	ft = (4,6,9,3)			-->	frm_0004, frm_0006, frm_0009, and frm_0003
+# eg.	pl = [("fft",-1,)]		-->	all values for fft
+# eg.	pl = [("fft",-1,),("m",4,)]	-->     all values for fft and the fourth value for m
+# eg.	pl = [("fft",1,6)]		-->     values 1-5 for fft
+
+# USAGE EXAMPLE: Extract the 5th element of file "fft" and the 1st element of file "t" for every "frm" in "bub_0001" and plot "fft" vs "t"...
+
+# S = study ((1,),(-1,),[("fft",4,),("t",0,)]);
+# fft_array = [f.p["fft"] for f in S.b[0].f];
+# t_array = [f.p["t"] for f in S.b[0].f];
+# S.plot(t_array,fft_array)

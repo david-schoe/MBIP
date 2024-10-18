@@ -9,23 +9,34 @@
 
 # ENV VARIABLES
 
-
+					# This just keeps track of the full-path of the current working directory
 export DOT0=$(shell pwd)
 
+
+					# Options to restrict how much information is displayed during the build process	
 MAKEFLAGS += --no-print-directory
+.SILENT:
 
-#.SILENT:
-
+					# Use the more robust "bash" to execute commands rather than the standard "shell"
+					# This is done to allow easy syntax for arithmetic operations when incrementing
 SHELL = /bin/bash
 
+					# OBJ0 is the name of the "object" to be built and SPEC0 is the name of the "specifier" associated with that "object". 
+					# In this way an "object" can hold data a variety of files associated or derived from a specific "specifier".
+					# For example: the "object" is a bubble, and the "specifier" is the video of the bubble.
 OBJ0 = bub
-OBJS0 = bubs
-
 SPEC0 = vid
+
+
+					# OBJS0 is the name of the directory which all the "objects"  will be held in
+					# SPECS0 is the name of the specifier that will be built inside of the OBJ0
+OBJS0 = bubs
 SPECS0 = vids
+
 
 # BUILDER
 
+					# "make build" will build one object OBJ0 for every SPEC0 in SPECS0
 build: $(DOT0)/.timestamp
 
 $(DOT0)/.timestamp: $(SPECS0) $(OBJS0)
@@ -52,16 +63,18 @@ $(DOT0)/.timestamp: $(SPECS0) $(OBJS0)
 $(OBJS0):
 	mkdir "$(DOT0)/$(OBJS0)"
 
-
+					# <make new_study> will (if not already made) make a "studys" directory and generate a new "study_xx.py" file
+					# where xx will be 00, then 01, then 02 ...					
 new_study: studys .nstdn
 	n=$$(cat .nstdn); \
 	fil=$$(printf "studys/study_%02d.py" $${n}); \
 	cp .study_template $${fil}; \
-	echo $$((n+1)) > .nstdn
+	echo $$((n+1)) > .nstdn; \
+	nano $$fil
 
-
-run_study: studys
-	s=$$(printf "studys/study_%02d.py" $(S)); \
+							# usage: <make run_study S=3> will execute the code found in "BUBBLES/studys/study_03.py"
+run_study:
+	s=$$(printf "studys/study_%02d" $(S)); \
 	PYTHONPATH=$(shell pwd)/.lib/plib py -m $${s}
 
 
@@ -72,29 +85,32 @@ studys:
 
 # METHODs
 
-
+							# <make order> will reorganize numbering of "objects". This is only to keep bubbles organized in a sequential manor
+							# and is useful when removing individual "objects"
 order:
 	./.lib/ord.sh
-
+							# <make clean> will remove every object in the object directory, every study in the study directory all METADATA files 
 clean: /tmp/BU
 	rm -r $(OBJS0); \
 	rm .bfp; \
-	rm -r studys; /
-	rm .nobjn
+	rm -r studys; \
+	rm .nobjn; \
 	rm .nstdn
-
+							# refer to .lib/upd.sh for information about the command <make update-all>
 update-all:
 	./.lib/upd.sh
 
 
 
 # METADATA
-.nstdn:
-	echo 0 > .nstdn
 
+							# .nstdn (next study number) holds the number that will be assigned to a new study if created using <make new_study>
+.nstdn:	
+	echo 0 > .nstdn
+							# .nobjn (next object number) holds the number that will be assigned to a new object if created using <make>
 .nobjn:
 	echo 0 > .nobjn
-
+							# /tmp/BU is created to hold back-up (BU) files, which are created when removing files using <make clean>
 /tmp/BU:
 	mkdir /tmp/BU
 

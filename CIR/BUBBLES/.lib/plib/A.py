@@ -28,15 +28,18 @@ def jacobi(A,b,n):
 
 
 
-def rrefsolve(A,b):
+def rref(A):
 
-	if A.shape[0] != A.shape[1] or A.shape[0] != b.shape[0]:
-		print ("Error: A must be an (n,n) numpy array and b a (n,) numpy array")
+	try:
+		N = A.shape[0];
+	except:
+		A = np.array(A);
+		N = A.shape[0]
+
+	if N != A.shape[1]-1:
+		print ("Error: A must be an (n,n+1) numpy array")
 		return
-	b = np.array([b]);
-	N = A.shape[0];
 	n = 0;
-	A = np.concatenate((A,b.T),axis=1);
 
 	while n<N:
 		den = A[n][n];
