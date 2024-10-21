@@ -21,7 +21,6 @@ while (1):
 							# The string is the directory of interest ( a frame )... so begin image processing from here on
 
 
-
 							# Open the "can" image in the frame
 	can = cv.imread(f"{frm}/can.png",cv.IMREAD_GRAYSCALE);
 	vis = cv.imread(f"{frm}/img.png");

@@ -2,7 +2,7 @@ import sys
 import os
 import cv2 as cv
 import numpy as np
-
+import time
 min_area = 200;
 
 while (1):
@@ -19,7 +19,7 @@ while (1):
 
 							# Convert the binary "buf" into a string
 
-	strl = buf.decode('utf-8').splitlines();
+	frm = buf.decode('utf-8').split('\n')[0];
 
 							# The string is the directory of interest (a frame)... so begin image processing from here on
 
@@ -27,7 +27,7 @@ while (1):
 
 							# Open the image in the frame, invert the image (make black pixels white and vice-versa) using a thresholding value.
 
-	img = cv.imread(f"{strl[0]}/img.png",cv.IMREAD_GRAYSCALE);
+	img = cv.imread(f"{frm}/img.png",cv.IMREAD_GRAYSCALE);
 	_,thr = cv.threshold(img,80,255,cv.THRESH_BINARY_INV);
 
 
@@ -48,9 +48,9 @@ while (1):
 
 							# Store the images that were created
 
-	cv.imwrite(f"{strl[0]}/thr.png",thr);
-	cv.imwrite(f"{strl[0]}/fil.png",fil);
-	cv.imwrite(f"{strl[0]}/can.png",can);
+	cv.imwrite(f"{frm}/thr.png",thr);
+	cv.imwrite(f"{frm}/fil.png",fil);
+	cv.imwrite(f"{frm}/can.png",can);
 
 
 							# Close the fifo. This is done to ensure that a call to "os.read" in the next iteration will cause this process
@@ -65,5 +65,5 @@ while (1):
 
 	if len(sys.argv) == 3:
 		o = os.open(sys.argv[2], os.O_WRONLY);
-		os.write(o, strl[0].encode('ascii'));
+		os.write(o, frm.encode('ascii'));
 		os.close(o);

@@ -93,7 +93,7 @@ $(DOT1)/.can.png: .lib/plib/can_pngbd.py
 
 
 
-$(DOT1)/.rad: .lib/plib/radbd.py .chainfalse
+$(DOT1)/.rad: .lib/plib/radbd.py
 	echo radbd >> kicklist; \
 	touch .rad
 

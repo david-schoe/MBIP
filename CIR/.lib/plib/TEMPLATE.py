@@ -16,13 +16,13 @@ while (1):
 
 
 						# Convert the binary "buf" into a string
-	strl = buf.decode('utf-8').splitlines();
+	frm = buf.decode('utf-8').split('\n')[0];
 						# The string is the directory of interest (a frame)... so begin image processing from here on
 
 
 
 						# Open the <some_image_here> image in the frame
-	<some_image_here> = cv.imread(f"{strl[0]}/<some_image_here>.png",cv.IMREAD_GRAYSCALE);
+	<some_image_here> = cv.imread(f"{frm}/<some_image_here>.png",cv.IMREAD_GRAYSCALE);
 
 
 
@@ -44,5 +44,5 @@ while (1):
 						# similar to this) if there is one.
 	if len(sys.argv) == 3:
 		o = os.open(sys.argv[2], os.O_WRONLY);
-		os.write(o, strl[0].encode('ascii'));
+		os.write(o, frm.encode('ascii'));
 		os.close(o);

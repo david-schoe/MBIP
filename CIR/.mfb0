@@ -18,6 +18,7 @@ SHELL=/bin/bash
 
 DOT1 = $(shell pwd)
 
+
 OBJ0 = bub
 OBJ1 = frm
 OBJS0 = bubs
@@ -45,10 +46,10 @@ $(DOT)/.timestamp: $(OBJS1) kicklist
 	for obj in $$(ls $(OBJS1)); do \
 		echo "building $${obj} ..."; \
 		echo $(DOT1)/$(OBJS1)/$${obj} > i0; \
-		cat $(shell tail -n 1 iL) > /dev/null; \
+		cat $$(tail -n 1 iL) > /dev/null; \
 	done;
-	kill $(shell cat pL); \
-	rm $(shell cat iL) iL pL kicklist
+	kill $$(cat pL); \
+	rm $$(cat iL) iL pL kicklist
 
 
 
@@ -56,11 +57,11 @@ $(DOT)/.timestamp: $(OBJS1) kicklist
 
 
 kicklist: $(DPROPS)
-	echo $(DPROPS)
+
 	mkfifo i0; \
 	echo i0 > iL; \
 	n=0; \
-	for k in $(shell cat kicklist); do \
+	for k in $$(cat kicklist); do \
 		mkfifo i$$((n+1)); \
 		echo i$$((n+1)) >> iL; \
 		PYTHONPATH=$(shell pwd)/.lib/plib py -m $${k} "i$${n}" "i$$((n+1))" & \
@@ -74,12 +75,12 @@ $(OBJS1): $(SPECS1)
 	mkdir $(OBJS1); \
 	I=0; \
 	FPS=$$(cat $(SPEC0)fps); \
-	for spec in $(shell ls $(SPECS1)); do \
+	for spec in $$(ls $(SPECS1)); do \
 		obj=$$(printf "$(OBJ1)_%04d" $$I); \
 		dir=$(DOT1)/$(OBJS1)/$$obj; \
 		mkdir $$dir 2>/dev/null; \
 		cp $(SPECS1)/$$spec $(OBJS1)/$$obj/$(SPEC1).png; \
-		echo $$((I/FPS)) > $(OBJS1)/$$obj/t; \
+		echo $${I} > $(OBJS1)/$$obj/t; \
 		I=$$((I+1)); \
 		echo $$dir >> .ffp; \
 	done
@@ -104,8 +105,7 @@ $(SPECS1):
 	FO="$(DOT1)/$(SPECS1)/${SPEC1}_%04d.png"; \
 	ffmpeg -v 0 -i $${FI} -start_number 0 $${FO}; \
 	ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=r_frame_rate $(SPEC0).avi > $(SPEC0)fps
-	ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=pix_fmt $(SPEC0).avi > $(SPEC0)pix_fmt
-
+	ffprobe -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=pix_fmt $(SPEC0).avi > $(SPEC0)pix_fmt; \
 
 
 $(SPECS0):

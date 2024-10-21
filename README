@@ -50,6 +50,19 @@ To use the study environment:
 
 
 
+VISUALIZATION TOOL:
+
+As image processing typically involves manipulating one image to another, then another... and additionally since the entire premise of this project is to analyze a video
+of a bubble's oscillation (that is, the sequence of manipulating images is applied to every frame within the video), it was only natural to include a tool which allows the user
+to select any manipulated image within the process and compile every equivalent image in every frame into a video. 
+
+To use the visualization tool:
+1. Enter any "bub" directory (eg: bub_0001)
+2. run <make vid IMG=[image name without suffix]> eg: <make vid IMG=can>
+3. run <ffplay vids/[image name without suffix].avi> eg: <ffplay vids/can.avi>
+
+
+
 PREREQUISITES:
 
 1. Must be running on some form of linux (Debian recommended)
@@ -61,6 +74,6 @@ INITIAL BUILD:
 
 1. After cloning the repository in the ideal location, type the command: make
 2. If dependencies are missing, the build will "fail" due to lack of permission; in this case, type the command: sudo make
-3. Enter the directory, "BUBBLES", by typing the command: cd CIR/BUBBLES
-4. Once inside the directory, "BUBBLES", type the command: make (NOTE two bubbles will be constructed inside of a directory called "bubs"
+3. Enter the directory, "CIR", by typing the command <cd CIR>
+4. Once inside the directory, "CIR", type the command <make> (NOTE two bubbles will be constructed inside of a directory called "bubs"
 

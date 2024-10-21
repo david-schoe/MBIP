@@ -22,7 +22,7 @@ all: /bin/py /bin/ffmpeg ./CIR/BUBBLES/vids ./CIR/BUBBLES/Makefile
 	apt-get install ffmpeg
 
 ./CIR/BUBBLES/vids:
-	cp -r ./CIR/BUBBLES/.vids  ./CIR/BUBBLES/vids
+	cp -r ./CIR/.vids  ./CIR/vids
 
 ./CIR/BUBBLES/Makefile:
-	cp  ./CIR/BUBBLES/.mf  ./CIR/BUBBLES/Makefile
+	cp  ./CIR/.mf  ./CIR/Makefile
