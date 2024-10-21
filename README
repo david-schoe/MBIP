@@ -20,8 +20,8 @@ has decided it would be useful to include an additional data point for each "frm
 to pick a starting point from data that has already been calculated, and run on top of that. To accomplish this, general analysis has been chunked and delegated to
 several python daemons, which are capable of operating on individual "frm"s in rapid succession.
 
-Each "frm" uses these daemons to process the "img" associated. At it's current state, there are two daemons, can_png.py and rad.py.  rad.py depends on information that
-is produced by can_png, and can_png relies on only the "img" which has been extracted from the "vid".
+Each "frm" uses these daemons to process the "img" associated. At it's current state, there are two daemons, can_pngbd.py and radbd.py.  radbd.py depends on information that
+is produced by can_pngbd.py, and can_pngbd.py relies on only the "img" which has been extracted from the "vid".
 
 After each "frm" has been processed, the data point(s) of interest are stored within the "frm_xxxx" directory. This is great because it uses disk space to preserve the
 bubble properties, and reduces the amount of re-processing required when studying a bubble. The only catch, is the data is stored on the disk, and a researcher
